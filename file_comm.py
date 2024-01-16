@@ -103,8 +103,8 @@ class main_runner:
                     print('[*] Key too long. Not supported for now.')
                 else:
                     self.enc_phrase.encode()
-        if self.debug: print(self.enc_phrase, 'Len:', len(self.enc_phrase), 'Type:', type(self.enc_phrase))
-        self.fernet = Fernet(self.enc_phrase)
+        if self.debug and self.encrypt: print(self.enc_phrase, 'Len:', len(self.enc_phrase), 'Type:', type(self.enc_phrase))
+        if self.encrypt: self.fernet = Fernet(self.enc_phrase)
 
     def run(self):
         if self.mode == 1:
@@ -183,7 +183,7 @@ class main_runner:
                     break
                 while(self.lock.acquire() == False):
                     pass
-                if (data.decode() != ''):
+                if len(data) > 0:
                     encoded_data = base64.b64encode(data)
                     if self.encrypt:
                         encoded_data = self.fernet.encrypt(encoded_data)
